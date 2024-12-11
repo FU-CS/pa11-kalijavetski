@@ -6,10 +6,165 @@ package pa11;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class HashSetTest {
 
-    @Test void EmptySet() {
+
+class HashSetTest{
+
+    @Test 
+    void EmptySet() {
         HashSet set = new HashSet();
         assertEquals(set.size(), 0);
+        assertEquals(set.isEmpty(), true);
+    }
+
+    @Test 
+    void Set() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        assertEquals(set.size(), 4);
+        assertEquals(set.isEmpty(), false);
+    }
+
+    @Test 
+    void Set_remove() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.remove("abc");
+        assertEquals(set.size(), 0);
+    }
+
+    @Test 
+    void Set_remove_notfound() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.remove("ab");
+        assertEquals(set.size(), 1);
+    }
+
+    @Test 
+    void Set_toarray() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        String[] array = {"abc","ab","ac","a"};
+        assertArrayEquals(set.toArray(), array);
+    }
+
+    @Test 
+    void Set_intersection() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("ac");
+        set2.add("ab");
+        set2.add("bc");
+        HashSet intersect = new HashSet();
+        intersect.add("ac");
+        intersect.add("ab");
+        HashSet firstset = set.intersection(set2);
+        String[] first= intersect.toArray();
+        String[] second = firstset.toArray();
+        assertArrayEquals(first,second);
+    }
+
+    @Test 
+    void Set_union() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("ac");
+        set2.add("ab");
+        set2.add("bc");
+        HashSet union = new HashSet();
+        union.add("abc");
+        union.add("ac");
+        union.add("ab");
+        union.add("a");
+        union.add("bc");
+        HashSet firstset = set.union(set2);
+        String[] first= union.toArray();
+        String[] second = firstset.toArray();
+        assertArrayEquals(first,second);
+    }
+    @Test 
+    void Set_difference() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("ac");
+        set2.add("ab");
+        set2.add("bc");
+        HashSet difference = new HashSet();
+        difference.add("a");
+        difference.add("abc");
+        HashSet firstset = set.difference(set2);
+        String[] first= difference.toArray();
+        String[] second = firstset.toArray();
+        assertArrayEquals(first,second);
+    }
+    @Test 
+    void Set_subset() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("ac");
+        set2.add("ab");
+        assertEquals(true,set.subset(set2));
+    }
+
+    @Test 
+    void Set_subset_bigger() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("abc");
+        set2.add("ac");
+        set2.add("ab");
+        set2.add("a");
+        set2.add("abcde");
+        assertEquals(false,set.subset(set2));
+    }
+    @Test 
+    void Set_subset_empty() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        assertEquals(true,set.subset(set2));
+    }
+    @Test 
+    void Set_subset_not() {
+        HashSet set = new HashSet();
+        set.add("abc");
+        set.add("ac");
+        set.add("ab");
+        set.add("a");
+        HashSet set2 = new HashSet();
+        set2.add("abc");
+        set2.add("ac");
+        set2.add("b");
+        assertEquals(false,set.subset(set2));
     }
 }
