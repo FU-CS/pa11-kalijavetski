@@ -1,12 +1,20 @@
 package pa11;
 
+import java.util.LinkedList;
+
+
 public class HashMap {
+    private LinkedList<Pair<String, String>>[] data;
+    private int capacity = 101;
 
     /**
      *  Constructor for the map
      */
     public HashMap() {
-        System.out.println("HashMap");
+        this.data = new LinkedList[capacity];
+        for (int i=0; i<capacity; i++){
+            this.data[i] = new LinkedList<Pair<String,String>>();
+    }
     }
     
     /** 
@@ -14,7 +22,13 @@ public class HashMap {
      *  @return the number of elements in the map
      */
     public int size() {
-        System.out.println("Size");
+        int count = 0;
+        for (LinkedList<Pair<String,String>> list:data){
+            if (!list.isEmpty()){
+                count += list.size();
+            }
+        }
+        return count;
     }
 
     /**
@@ -22,7 +36,12 @@ public class HashMap {
      *  @return a boolean indicating whether the map is empty
      */
     public boolean isEmpty() {
-        System.out.println("IsEmpty");
+        for (LinkedList<Pair<String,String>> list:data){
+            if (!list.isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -31,7 +50,13 @@ public class HashMap {
      *  @return the value associated with the key, or null if no such entry exists
      */
     public String get(String key) {
-        System.out.println("Get " + key);
+        for (LinkedList<Pair<String,String>> list:data){
+            for (Pair<String,String> pair:list){
+                if (pair.key == key){
+                    return pair.value;
+                }
+            }
+        }
         return null;
     }
 
@@ -42,9 +67,24 @@ public class HashMap {
      *  @return the old value associated with the key, or null if no such entry exists
      */
     public String put(String key, String value) {
-        System.out.println("Put " + key + " " + value);
+        int sum = 0;
+        for (int i=0; i<key.length(); i++){
+            char ch = key.charAt(i);
+            int ascii = (int) ch;
+            sum = sum + ascii;
+        }
+        int loc = sum % capacity;
+        for (Pair<String,String> pair:data[loc]){
+            if (pair.key == key){
+                String currval = pair.value;
+                pair.value = value;
+                return currval;
+            }
+        }
+        data[loc].add(new Pair<>(key,value));
         return null;
     }
+    
 
     /**
      *  Remove an entry from the map
@@ -52,7 +92,20 @@ public class HashMap {
      *  @return the value associated with the key, or null if no such entry exists
      */
     public String remove(String key) {
-        System.out.println("Remove " + key);
+        int sum = 0;
+        for (int i=0; i<key.length(); i++){
+            char ch = key.charAt(i);
+            int ascii = (int) ch;
+            sum = sum + ascii;
+        }
+        int loc = sum % capacity;
+        for (Pair<String,String> pair:data[loc]){
+            if (pair.key == key){
+                String currval = pair.value;
+                data[loc].remove(pair);
+                return currval;
+            }
+        }
         return null;
     }
 
@@ -61,8 +114,17 @@ public class HashMap {
      *  @return all the keys stored in the map
      */
     public String[] keySet() {
-        System.out.println("KeySet");
-        return null;
+        int i = 0;
+        String[] array = new String[size()];
+        for (LinkedList<Pair<String,String>> list:data){
+            if (!list.isEmpty()){
+                for (Pair<String,String> pair:list){
+                    array[i] = pair.key;
+                    i += 1;
+                }
+            }
+        }
+        return array;
     }
 
     /**
@@ -70,7 +132,17 @@ public class HashMap {
      *  @return all the values stored in the map
      */
     public String[] values() {
-        System.out.println("Values");
-        return null;
+        int i = 0;
+        String[] array = new String[size()];
+        for (LinkedList<Pair<String,String>> list:data){
+            if (!list.isEmpty()){
+                for (Pair<String,String> pair:list){
+                    array[i] = pair.value;
+                    i += 1;
+                }
+            }
+        }
+        return array;
     }
+
 }
